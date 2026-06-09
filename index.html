@@ -180,14 +180,14 @@
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Bruitage Ouverture -->
+  <!-- Bruitage Ouverture d'enveloppe -->
   <audio id="open-sound" preload="auto">
-    <source src="https://freesound.org/data/previews/66/66930_634166-lq.mp3" type="audio/mpeg">
+    <source src="https://assets.mixkit.co/sfx/preview/296/296.wav" type="audio/wav">
   </audio>
 
   <!-- Bruitage Fermeture -->
   <audio id="close-sound" preload="auto">
-    <source src="https://freesound.org/data/previews/342/342749_5123853-lq.mp3" type="audio/mpeg">
+    <source src="https://assets.mixkit.co/sfx/preview/257/257.wav" type="audio/wav">
   </audio>
 
   <script>
@@ -201,7 +201,6 @@
     const openSound = document.getElementById('open-sound');
     const closeSound = document.getElementById('close-sound');
 
-    // Musique fond
     function startBgMusic() {
       bgMusic.volume = 0.4;
       bgMusic.play().catch(() => {});
@@ -212,7 +211,6 @@
     document.body.addEventListener('touchstart', startBgMusic, { once: true });
 
     function openEnvelope() {
-      // Bruitage ouverture
       openSound.currentTime = 0;
       openSound.play().catch(() => {});
 
@@ -228,11 +226,9 @@
     }
 
     function goBack() {
-      // Bruitage fermeture
       closeSound.currentTime = 0;
       closeSound.play().catch(() => {});
 
-      // Animation de fermeture
       flap.style.transform = 'rotateX(0deg)';
       seal.style.transform = 'translateX(-50%) scale(1)';
       seal.style.opacity = '1';
@@ -248,7 +244,6 @@
     envelope.addEventListener('click', openEnvelope);
     envelope.addEventListener('touchstart', (e) => { e.preventDefault(); openEnvelope(); });
 
-    // Cœurs partout
     function createHeart() {
       const heart = document.createElement('div');
       heart.classList.add('heart');

@@ -11,12 +11,9 @@
     body {
       min-height: 100vh;
       background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      overflow: hidden;
+      overflow-y: auto;
       font-family: 'Playfair Display', serif;
       position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
     .heart {
@@ -33,16 +30,18 @@
       100% { transform: translateY(-120px) rotate(720deg); opacity: 0; }
     }
 
-    .scene {
+    /* Conteneur initial (enveloppe centrée) */
+    .initial {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       display: flex;
-      gap: 60px;
+      flex-direction: column;
       align-items: center;
-      position: relative;
       z-index: 10;
-      padding: 20px;
     }
 
-    /* Enveloppe */
     .envelope {
       width: 320px;
       height: 220px;
@@ -86,19 +85,29 @@
       z-index: 4;
     }
 
-    /* Lettre */
+    .click-text {
+      margin-top: 25px;
+      color: #9c2a4d;
+      font-size: 1.1em;
+      font-style: italic;
+      text-align: center;
+    }
+
+    /* Lettre en plein écran */
     .letter {
-      width: 380px;
-      min-height: 520px;
+      width: 100%;
+      max-width: 420px;
+      margin: 40px auto;
       background: #fffdf0;
-      padding: 50px 40px 40px;
+      padding: 50px 40px 80px;
       border: 2px solid #d4b89e;
       border-radius: 12px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.3);
       opacity: 0;
-      transform: translateY(40px) scale(0.9);
+      transform: translateY(40px) scale(0.95);
       transition: all 1.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
+      z-index: 20;
     }
 
     .letter.show {
@@ -129,7 +138,7 @@
 
     .btn {
       position: absolute;
-      bottom: 35px;
+      bottom: 40px;
       left: 50%;
       transform: translateX(-50%);
       padding: 12px 40px;
@@ -138,95 +147,66 @@
       border: none;
       border-radius: 30px;
       font-family: 'Dancing Script', cursive;
-      font-size: 1.4em;
+      font-size: 1.5em;
       cursor: pointer;
       box-shadow: 0 5px 15px rgba(196, 30, 58, 0.4);
     }
 
-    /* === RESPONSIVE MOBILE === */
-    @media (max-width: 768px) {
-      .scene {
-        flex-direction: column;
-        gap: 40px;
-        padding: 15px;
-      }
-      
-      .envelope {
-        width: 280px;
-        height: 190px;
-      }
-      
-      .seal {
-        width: 58px;
-        height: 58px;
-        font-size: 32px;
-        top: 50px;
-      }
-      
-      .letter {
-        width: 100%;
-        max-width: 340px;
-        min-height: 480px;
-        padding: 35px 25px 35px;
-      }
-      
-      .letter h1 {
-        font-size: 2.4em;
-      }
-      
-      .letter p {
-        font-size: 1.02em;
-      }
-    }
-
+    /* Responsive */
     @media (max-width: 480px) {
-      .envelope {
-        width: 250px;
-        height: 170px;
-      }
+      .envelope { width: 260px; height: 180px; }
+      .seal { width: 58px; height: 58px; font-size: 32px; top: 48px; }
+      .letter { margin: 20px auto; padding: 35px 25px 70px; }
+      .letter h1 { font-size: 2.4em; }
     }
   </style>
 </head>
 <body>
 
-  <div class="scene">
-    <!-- Enveloppe -->
+  <!-- Enveloppe centrée -->
+  <div class="initial" id="initial">
     <div class="envelope" id="envelope">
       <div class="flap" id="flap"></div>
       <div class="seal" id="seal">❤️</div>
-      <div style="position:absolute; bottom:20px; width:100%; text-align:center; color:#9c2a4d; font-size:0.9em; font-style:italic;">
-        Click to Open the letter
-      </div>
     </div>
+    <div class="click-text" id="click-text">
+      Click to Open the letter
+    </div>
+  </div>
 
-    <!-- Lettre -->
-    <div class="letter" id="letter">
-      <h1>For my love</h1>
-      <p><strong>Mon Amour,</strong></p>
-      <p>Since I met you, I can’t stop thinking about you. I never thought I would find someone like you—a real sunshine, always smiling, laughing, and making jokes. I never thought I could become so close to someone like you.</p>
-      
-      <p>We’ve been together for 4 months, but it feels like 4 years. I’ve never loved someone the way I love you, and I never want it to end.</p>
-      
-      <p>I don’t know if I’m the best, but I will always do my best to make you feel better and make you happy. Lola, I really love you, and I would never treat you badly. You deserve the very best in life, and I will always try to give you what you deserve.</p>
-      
-      <p class="signature">I love you, Lola. ❤️<br><br>Ma Chérie</p>
-      
-      <button class="btn" onclick="restart()">Ma Chérie</button>
-    </div>
+  <!-- Lettre -->
+  <div class="letter" id="letter">
+    <h1>For my love</h1>
+    <p><strong>Mon Amour,</strong></p>
+    <p>Since I met you, I can’t stop thinking about you. I never thought I would find someone like you—a real sunshine, always smiling, laughing, and making jokes. I never thought I could become so close to someone like you.</p>
+    
+    <p>We’ve been together for 4 months, but it feels like 4 years. I’ve never loved someone the way I love you, and I never want it to end.</p>
+    
+    <p>I don’t know if I’m the best, but I will always do my best to make you feel better and make you happy. Lola, I really love you, and I would never treat you badly. You deserve the very best in life, and I will always try to give you what you deserve.</p>
+    
+    <p class="signature">I love you, Lola. ❤️<br><br>Ma Chérie</p>
+    
+    <button class="btn" onclick="restart()">Ma Chérie</button>
   </div>
 
   <script>
     const envelope = document.getElementById('envelope');
     const flap = document.getElementById('flap');
     const seal = document.getElementById('seal');
+    const initial = document.getElementById('initial');
     const letter = document.getElementById('letter');
 
     envelope.addEventListener('click', () => {
+      // Animation ouverture
       flap.style.transform = 'rotateX(180deg)';
       seal.style.transform = 'translateX(-50%) scale(0.15)';
       seal.style.opacity = '0';
 
-      setTimeout(() => letter.classList.add('show'), 900);
+      // Cacher l'enveloppe et afficher la lettre
+      setTimeout(() => {
+        initial.style.display = 'none';
+        letter.classList.add('show');
+      }, 800);
     });
 
     // Cœurs flottants
@@ -244,7 +224,9 @@
     setInterval(createHeart, 280);
     for (let i = 0; i < 20; i++) createHeart();
 
-    function restart() { location.reload(); }
+    function restart() {
+      location.reload();
+    }
   </script>
 </body>
 </html>

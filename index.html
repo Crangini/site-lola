@@ -3,49 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Une lettre pour toi 💌</title>
+  <title>For my love 💖</title>
 
   <style>
     body {
       margin: 0;
       height: 100vh;
       overflow: hidden;
-      font-family: Arial, sans-serif;
+      font-family: "Georgia", serif;
+      background: linear-gradient(135deg, #f7e6e0, #fdecef);
       display: flex;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #f7e6e0, #fdecef);
+      flex-direction: column;
     }
 
-    /* 🎈 bulles cœur */
-    .heart {
+    /* 💖 titre */
+    .title {
       position: absolute;
-      color: rgba(255, 105, 180, 0.5);
-      font-size: 20px;
-      animation: floatUp 8s linear infinite;
+      top: 20px;
+      font-size: 32px;
+      color: #ff6fa3;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
 
-    @keyframes floatUp {
-      0% {
-        transform: translateY(100vh) scale(0.5);
-        opacity: 0;
-      }
-      30% { opacity: 1; }
-      100% {
-        transform: translateY(-10vh) scale(1.2);
-        opacity: 0;
-      }
-    }
-
-    /* 💌 enveloppe */
+    /* 📩 enveloppe réaliste */
     .envelope {
-      width: 220px;
-      height: 140px;
-      background: #fff;
+      width: 260px;
+      height: 170px;
       position: relative;
-      cursor: pointer;
+      background: #fff;
       border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      cursor: pointer;
+      overflow: hidden;
       transition: transform 0.3s;
     }
 
@@ -53,47 +45,71 @@
       transform: scale(1.05);
     }
 
+    /* triangle du dessus */
     .flap {
       position: absolute;
       top: 0;
-      left: 0;
       width: 0;
       height: 0;
-      border-left: 110px solid transparent;
-      border-right: 110px solid transparent;
-      border-bottom: 70px solid #ffd6e0;
+      border-left: 130px solid transparent;
+      border-right: 130px solid transparent;
+      border-bottom: 90px solid #ffd6e0;
       transform-origin: top;
-      transition: transform 0.6s;
+      transition: transform 0.8s;
+      z-index: 3;
     }
 
+    /* lettre */
     .letter {
       position: absolute;
       bottom: 0;
       width: 100%;
       height: 100%;
-      background: white;
-      border-radius: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
+      background: #fffafc;
       padding: 20px;
-      text-align: center;
-      transition: opacity 0.6s;
+      box-sizing: border-box;
+      transform: translateY(100%);
+      transition: transform 0.8s;
+      overflow-y: auto;
     }
 
+    /* ouverture */
     .open .flap {
       transform: rotateX(180deg);
     }
 
     .open .letter {
-      opacity: 1;
+      transform: translateY(0%);
     }
 
-    /* 💌 message */
-    .message {
-      font-size: 18px;
+    /* texte lettre */
+    h2 {
+      color: #ff6fa3;
+      font-size: 22px;
+      margin-bottom: 10px;
+      font-family: "Georgia", serif;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.6em;
       color: #444;
+      white-space: pre-line;
+    }
+
+    /* bas de page */
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 14px;
+      color: #c97b9a;
+      letter-spacing: 1px;
+    }
+
+    .footer span {
+      cursor: pointer;
+      color: #ff6fa3;
+      font-weight: bold;
     }
 
   </style>
@@ -101,38 +117,35 @@
 
 <body>
 
-  <!-- 💖 bulles cœur générées -->
-  <script>
-    function createHearts() {
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.innerHTML = "❤️";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = (4 + Math.random() * 6) + "s";
-      document.body.appendChild(heart);
+  <!-- 💖 titre -->
+  <div class="title">For my love</div>
 
-      setTimeout(() => {
-        heart.remove();
-      }, 8000);
-    }
-
-    setInterval(createHearts, 300);
-  </script>
-
-  <!-- 💌 enveloppe -->
-  <div class="envelope" onclick="openLetter(this)">
+  <!-- 📩 enveloppe -->
+  <div class="envelope" id="envelope" onclick="openLetter()">
     <div class="flap"></div>
+
     <div class="letter">
-      <div class="message">
-        💌 Ceci est ton message par défaut 💌<br><br>
-        Tu peux changer ce texte quand tu veux ❤️
-      </div>
+      <h2>Mon Amour,</h2>
+      <p>
+Since I met you, I can't stop thinking about you. I never thought I would find someone like you—a real sunshine, always smiling, laughing, and making jokes. I never thought I could become so close to someone like you.
+
+We've been together for 4 months, but it feels like 4 years. I've never loved someone the way I love you, and I never want it to end.
+
+I don't know if I'm the best, but I will always do my best to make you feel better and make you happy. Lola, I really love you, and I would never treat you badly. You deserve the very best in life, and I will always try to give you what you deserve.
+
+I love you, Lola. ❤️
+      </p>
     </div>
   </div>
 
+  <!-- 👇 texte bas -->
+  <div class="footer">
+    <span onclick="openLetter()">Click to Open the letter</span>
+  </div>
+
   <script>
-    function openLetter(el) {
-      el.classList.toggle("open");
+    function openLetter() {
+      document.getElementById("envelope").classList.toggle("open");
     }
   </script>
 

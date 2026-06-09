@@ -154,6 +154,8 @@
       right: 20px;
       z-index: 300;
       display: none;
+      font-size: 1.1em;
+      padding: 8px 20px;
     }
 
     #bg-music {
@@ -183,8 +185,8 @@
     <p>Since I met you, I can’t stop thinking about you. I never thought I would find someone like you—a real sunshine, always smiling, laughing, and making jokes. I never thought I could become so close to someone like you.</p>
     <p>We’ve been together for 4 months, but it feels like 4 years. I’ve never loved someone the way I love you, and I never want it to end.</p>
     <p>I don’t know if I’m the best, but I will always do my best to make you feel better and make you happy. Lola, I really love you, and I would never treat you badly. You deserve the very best in life, and I will always try to give you what you deserve.</p>
-    <p class="signature">I love you, Lola. ❤️<br><br>Ma Chérie</p>
-    <button class="btn" onclick="restart()">Ma Chérie</button>
+    <p class="signature">I love you, Lola. ❤️</p>
+    <button class="btn" onclick="restart()">Pour ma chérie</button>
   </div>
 
   <button id="go-back" onclick="goBack()">← Go Back</button>
@@ -203,12 +205,14 @@
     const goBackBtn = document.getElementById('go-back');
     const music = document.getElementById('bg-music');
 
+    // Musique automatique dès l'arrivée sur le site
     function startMusic() {
       music.volume = 0.45;
       music.play().catch(() => {});
     }
 
     window.addEventListener('load', startMusic);
+    // Backup si autoplay bloqué
     document.body.addEventListener('click', startMusic, { once: true });
 
     function openEnvelope() {

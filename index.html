@@ -30,7 +30,6 @@
       100% { transform: translateY(-120px) rotate(720deg); opacity: 0; }
     }
 
-    /* Conteneur initial (enveloppe centrée) */
     .initial {
       position: absolute;
       top: 50%;
@@ -39,7 +38,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      z-index: 10;
+      z-index: 30;
     }
 
     .envelope {
@@ -93,13 +92,12 @@
       text-align: center;
     }
 
-    /* Lettre en plein écran */
     .letter {
       width: 100%;
       max-width: 420px;
       margin: 40px auto;
       background: #fffdf0;
-      padding: 50px 40px 80px;
+      padding: 50px 40px 100px;
       border: 2px solid #d4b89e;
       border-radius: 12px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.3);
@@ -108,9 +106,11 @@
       transition: all 1.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
       z-index: 20;
+      display: none; /* Important pour le fix */
     }
 
     .letter.show {
+      display: block;
       opacity: 1;
       transform: translateY(0) scale(1);
     }
@@ -152,11 +152,18 @@
       box-shadow: 0 5px 15px rgba(196, 30, 58, 0.4);
     }
 
-    /* Responsive */
+    #bg-music {
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      z-index: 100;
+      opacity: 0.9;
+    }
+
     @media (max-width: 480px) {
       .envelope { width: 260px; height: 180px; }
       .seal { width: 58px; height: 58px; font-size: 32px; top: 48px; }
-      .letter { margin: 20px auto; padding: 35px 25px 70px; }
+      .letter { margin: 20px auto; padding: 35px 25px 100px; }
       .letter h1 { font-size: 2.4em; }
     }
   </style>
@@ -169,9 +176,7 @@
       <div class="flap" id="flap"></div>
       <div class="seal" id="seal">❤️</div>
     </div>
-    <div class="click-text" id="click-text">
-      Click to Open the letter
-    </div>
+    <div class="click-text">Click to Open the letter</div>
   </div>
 
   <!-- Lettre -->
@@ -189,27 +194,36 @@
     <button class="btn" onclick="restart()">Ma Chérie</button>
   </div>
 
+  <!-- Musique -->
+  <audio id="bg-music" controls loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
     const envelope = document.getElementById('envelope');
     const flap = document.getElementById('flap');
     const seal = document.getElementById('seal');
     const initial = document.getElementById('initial');
     const letter = document.getElementById('letter');
+    const music = document.getElementById('bg-music');
+
+    window.addEventListener('load', () => {
+      music.volume = 0.35;
+      music.play().catch(() => console.log("Autoplay bloqué - clique sur le lecteur audio"));
+    });
 
     envelope.addEventListener('click', () => {
-      // Animation ouverture
       flap.style.transform = 'rotateX(180deg)';
       seal.style.transform = 'translateX(-50%) scale(0.15)';
       seal.style.opacity = '0';
 
-      // Cacher l'enveloppe et afficher la lettre
       setTimeout(() => {
         initial.style.display = 'none';
         letter.classList.add('show');
       }, 800);
     });
 
-    // Cœurs flottants
+    // Cœurs
     function createHeart() {
       const heart = document.createElement('div');
       heart.classList.add('heart');

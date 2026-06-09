@@ -180,12 +180,12 @@
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Bruitage ouverture -->
+  <!-- Bruitage Ouverture -->
   <audio id="open-sound" preload="auto">
     <source src="https://freesound.org/data/previews/66/66930_634166-lq.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Bruitage fermeture -->
+  <!-- Bruitage Fermeture -->
   <audio id="close-sound" preload="auto">
     <source src="https://freesound.org/data/previews/342/342749_5123853-lq.mp3" type="audio/mpeg">
   </audio>
@@ -201,6 +201,7 @@
     const openSound = document.getElementById('open-sound');
     const closeSound = document.getElementById('close-sound');
 
+    // Musique fond
     function startBgMusic() {
       bgMusic.volume = 0.4;
       bgMusic.play().catch(() => {});
@@ -211,6 +212,7 @@
     document.body.addEventListener('touchstart', startBgMusic, { once: true });
 
     function openEnvelope() {
+      // Bruitage ouverture
       openSound.currentTime = 0;
       openSound.play().catch(() => {});
 
@@ -226,6 +228,7 @@
     }
 
     function goBack() {
+      // Bruitage fermeture
       closeSound.currentTime = 0;
       closeSound.play().catch(() => {});
 
@@ -245,7 +248,7 @@
     envelope.addEventListener('click', openEnvelope);
     envelope.addEventListener('touchstart', (e) => { e.preventDefault(); openEnvelope(); });
 
-    // Cœurs partout en continu
+    // Cœurs partout
     function createHeart() {
       const heart = document.createElement('div');
       heart.classList.add('heart');
@@ -259,8 +262,6 @@
 
     setInterval(createHeart, 220);
     for (let i = 0; i < 30; i++) createHeart();
-
-    function restart() { location.reload(); }
   </script>
 </body>
 </html>

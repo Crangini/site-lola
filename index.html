@@ -19,16 +19,17 @@
     .heart {
       position: absolute;
       color: #ff4d94;
-      font-size: 22px;
+      font-size: 24px;
       pointer-events: none;
       animation: floatHeart linear forwards;
-      opacity: 0.8;
+      opacity: 0.85;
       z-index: 5;
+      text-shadow: 0 0 8px rgba(255,77,148,0.6);
     }
 
     @keyframes floatHeart {
-      0% { transform: translateY(110vh) rotate(0deg); }
-      100% { transform: translateY(-150px) rotate(720deg); opacity: 0; }
+      0% { transform: translateY(110vh) rotate(0deg) scale(0.6); }
+      100% { transform: translateY(-180px) rotate(720deg) scale(1.2); opacity: 0; }
     }
 
     .initial {
@@ -53,17 +54,21 @@
       border-radius: 8px;
       position: relative;
       cursor: pointer;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-      transition: transform 0.4s;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      transition: transform 0.4s ease;
     }
+
+    .envelope:active { transform: scale(0.92); }
 
     .flap {
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 52%;
+      height: 55%;
       background: linear-gradient(#f0e0d0, #e8d5c0);
-      clip-path: polygon(0 0, 50% 62%, 100% 0);
-      transition: all 1.8s cubic-bezier(0.6, 0, 0.3, 1);
+      clip-path: polygon(0 0, 50% 65%, 100% 0);
+      transition: all 1.8s cubic-bezier(0.6, 0.02, 0.3, 1);
+      z-index: 3;
+      box-shadow: inset 0 -8px 12px rgba(0,0,0,0.15);
     }
 
     .seal {
@@ -71,38 +76,40 @@
       top: 58px;
       left: 50%;
       transform: translateX(-50%);
-      width: 68px;
-      height: 68px;
+      width: 72px;
+      height: 72px;
       background: #c41e3a;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 38px;
+      font-size: 42px;
       color: white;
-      box-shadow: 0 6px 15px rgba(196, 30, 58, 0.6);
+      box-shadow: 0 8px 20px rgba(196, 30, 58, 0.5);
       transition: all 1.4s ease;
+      z-index: 4;
     }
 
     .click-text {
-      margin-top: 30px;
+      margin-top: 35px;
       color: #9c2a4d;
-      font-size: 1.15em;
+      font-size: 1.2em;
       font-style: italic;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .letter {
       width: 100%;
       max-width: 380px;
-      margin: 30px auto;
+      margin: 40px auto;
       background: #fffdf0;
-      padding: 40px 30px 110px;
+      padding: 45px 35px 120px;
       border: 2px solid #d4b89e;
-      border-radius: 12px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      border-radius: 15px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.35);
       opacity: 0;
-      transform: translateY(40px) scale(0.95);
-      transition: all 1.6s ease;
+      transform: translateY(50px) scale(0.9);
+      transition: all 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
       z-index: 20;
       display: none;
@@ -114,35 +121,37 @@
       transform: translateY(0) scale(1);
     }
 
-    .letter h1 { font-family: 'Dancing Script', cursive; font-size: 2.6em; color: #9c2a4d; text-align: center; margin-bottom: 25px; }
-    .letter p { line-height: 1.75; color: #3f2a1f; margin-bottom: 16px; }
-    .signature { text-align: right; margin-top: 35px; font-size: 1.45em; color: #9c2a4d; }
+    .letter h1 { font-family: 'Dancing Script', cursive; font-size: 2.7em; color: #9c2a4d; text-align: center; margin-bottom: 28px; }
+    .letter p { line-height: 1.8; color: #3f2a1f; margin-bottom: 18px; }
+    .signature { text-align: right; margin-top: 40px; font-size: 1.5em; color: #9c2a4d; }
 
     .btn {
-      padding: 12px 40px;
+      padding: 14px 45px;
       background: #c41e3a;
       color: white;
       border: none;
       border-radius: 30px;
       font-family: 'Dancing Script', cursive;
-      font-size: 1.5em;
+      font-size: 1.6em;
       cursor: default;
-      opacity: 0.9;
+      opacity: 0.95;
+      box-shadow: 0 6px 15px rgba(196,30,58,0.4);
     }
 
     #go-back {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 8px 20px;
+      bottom: 25px;
+      right: 25px;
+      padding: 10px 22px;
       background: #c41e3a;
       color: white;
       border: none;
       border-radius: 30px;
-      font-size: 1.1em;
+      font-size: 1.05em;
       cursor: pointer;
       z-index: 300;
       display: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
   </style>
 </head>
@@ -168,18 +177,9 @@
 
   <button id="go-back" onclick="goBack()">← Go Back</button>
 
-  <!-- Musique fond -->
-  <audio id="bg-music" loop preload="auto">
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- Bruitages -->
-  <audio id="open-sound" preload="auto">
-    <source src="https://assets.mixkit.co/sfx/preview/2967/2967.wav" type="audio/wav">
-  </audio>
-  <audio id="close-sound" preload="auto">
-    <source src="https://assets.mixkit.co/sfx/preview/2957/2957.wav" type="audio/wav">
-  </audio>
+  <audio id="bg-music" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
+  <audio id="open-sound" preload="auto"><source src="https://assets.mixkit.co/sfx/preview/2967/2967.wav" type="audio/wav"></audio>
+  <audio id="close-sound" preload="auto"><source src="https://assets.mixkit.co/sfx/preview/2957/2957.wav" type="audio/wav"></audio>
 
   <script>
     const envelope = document.getElementById('envelope');
@@ -192,8 +192,13 @@
     const openSound = document.getElementById('open-sound');
     const closeSound = document.getElementById('close-sound');
 
+    function playSound(audio) {
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    }
+
     function startBgMusic() {
-      bgMusic.volume = 0.4;
+      bgMusic.volume = 0.42;
       bgMusic.play().catch(() => {});
     }
 
@@ -202,25 +207,22 @@
     document.body.addEventListener('touchstart', startBgMusic, { once: true });
 
     function openEnvelope() {
-      openSound.currentTime = 0;
-      openSound.play().catch(() => {});
+      playSound(openSound);
 
       flap.style.transform = 'rotateX(180deg)';
-      seal.style.transform = 'translateX(-50%) scale(0.15)';
+      seal.style.transform = 'translateX(-50%) scale(0.1)';
       seal.style.opacity = '0';
 
       setTimeout(() => {
         initial.style.display = 'none';
         letter.classList.add('show');
         goBackBtn.style.display = 'block';
-      }, 800);
+      }, 850);
     }
 
     function goBack() {
-      closeSound.currentTime = 0;
-      closeSound.play().catch(() => {});
+      playSound(closeSound);
 
-      // Animation de fermeture améliorée
       flap.style.transform = 'rotateX(0deg)';
       seal.style.transform = 'translateX(-50%) scale(1)';
       seal.style.opacity = '1';
@@ -230,25 +232,27 @@
 
       setTimeout(() => {
         initial.style.display = 'flex';
-      }, 1000);
+      }, 950);
     }
 
     envelope.addEventListener('click', openEnvelope);
     envelope.addEventListener('touchstart', (e) => { e.preventDefault(); openEnvelope(); });
 
+    // Cœurs ultra fluides
     function createHeart() {
       const heart = document.createElement('div');
       heart.classList.add('heart');
-      heart.textContent = ['♥','💕','💖'][Math.floor(Math.random()*3)];
+      heart.textContent = ['♥','💕','💖','♡'][Math.floor(Math.random()*4)];
       heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDuration = (Math.random() * 12 + 10) + 's';
-      heart.style.fontSize = (Math.random() * 22 + 18) + 'px';
+      heart.style.animationDuration = (Math.random() * 14 + 11) + 's';
+      heart.style.fontSize = (Math.random() * 26 + 18) + 'px';
+      heart.style.opacity = Math.random() * 0.4 + 0.6;
       document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 23000);
+      setTimeout(() => heart.remove(), 26000);
     }
 
-    setInterval(createHeart, 220);
-    for (let i = 0; i < 30; i++) createHeart();
+    setInterval(createHeart, 160);
+    for (let i = 0; i < 45; i++) createHeart();
   </script>
 </body>
 </html>

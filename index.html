@@ -9,7 +9,7 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      height: 100vh;
+      min-height: 100vh;
       background: linear-gradient(135deg, #ff9a9e, #fad0c4);
       overflow: hidden;
       font-family: 'Playfair Display', serif;
@@ -39,6 +39,7 @@
       align-items: center;
       position: relative;
       z-index: 10;
+      padding: 20px;
     }
 
     /* Enveloppe */
@@ -141,6 +142,49 @@
       cursor: pointer;
       box-shadow: 0 5px 15px rgba(196, 30, 58, 0.4);
     }
+
+    /* === RESPONSIVE MOBILE === */
+    @media (max-width: 768px) {
+      .scene {
+        flex-direction: column;
+        gap: 40px;
+        padding: 15px;
+      }
+      
+      .envelope {
+        width: 280px;
+        height: 190px;
+      }
+      
+      .seal {
+        width: 58px;
+        height: 58px;
+        font-size: 32px;
+        top: 50px;
+      }
+      
+      .letter {
+        width: 100%;
+        max-width: 340px;
+        min-height: 480px;
+        padding: 35px 25px 35px;
+      }
+      
+      .letter h1 {
+        font-size: 2.4em;
+      }
+      
+      .letter p {
+        font-size: 1.02em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .envelope {
+        width: 250px;
+        height: 170px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -150,7 +194,7 @@
     <div class="envelope" id="envelope">
       <div class="flap" id="flap"></div>
       <div class="seal" id="seal">❤️</div>
-      <div style="position:absolute; bottom:25px; width:100%; text-align:center; color:#9c2a4d; font-size:0.95em; font-style:italic;">
+      <div style="position:absolute; bottom:20px; width:100%; text-align:center; color:#9c2a4d; font-size:0.9em; font-style:italic;">
         Click to Open the letter
       </div>
     </div>
@@ -182,9 +226,7 @@
       seal.style.transform = 'translateX(-50%) scale(0.15)';
       seal.style.opacity = '0';
 
-      setTimeout(() => {
-        letter.classList.add('show');
-      }, 900);
+      setTimeout(() => letter.classList.add('show'), 900);
     });
 
     // Cœurs flottants
@@ -202,9 +244,7 @@
     setInterval(createHeart, 280);
     for (let i = 0; i < 20; i++) createHeart();
 
-    function restart() {
-      location.reload();
-    }
+    function restart() { location.reload(); }
   </script>
 </body>
 </html>

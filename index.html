@@ -41,7 +41,6 @@
       align-items: center;
       z-index: 100;
       width: 100%;
-      max-width: 100%;
       padding: 20px;
     }
 
@@ -56,7 +55,6 @@
       cursor: pointer;
       box-shadow: 0 15px 35px rgba(0,0,0,0.25);
       transition: transform 0.3s;
-      z-index: 101;
     }
 
     .envelope:active { transform: scale(0.95); }
@@ -68,7 +66,6 @@
       background: linear-gradient(#f0e0d0, #e8d5c0);
       clip-path: polygon(0 0, 50% 62%, 100% 0);
       transition: all 1.5s cubic-bezier(0.6, 0, 0.3, 1);
-      z-index: 3;
     }
 
     .seal {
@@ -87,7 +84,6 @@
       color: white;
       box-shadow: 0 6px 15px rgba(196, 30, 58, 0.6);
       transition: all 1.3s ease;
-      z-index: 4;
     }
 
     .click-text {
@@ -95,16 +91,14 @@
       color: #9c2a4d;
       font-size: 1.15em;
       font-style: italic;
-      text-align: center;
-      z-index: 102;
     }
 
     .letter {
       width: 100%;
-      max-width: 420px;
-      margin: 40px auto;
+      max-width: 380px;
+      margin: 30px auto;
       background: #fffdf0;
-      padding: 50px 35px 120px;
+      padding: 40px 30px 120px;
       border: 2px solid #d4b89e;
       border-radius: 12px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.3);
@@ -124,7 +118,7 @@
 
     .letter h1 {
       font-family: 'Dancing Script', cursive;
-      font-size: 2.8em;
+      font-size: 2.6em;
       color: #9c2a4d;
       text-align: center;
       margin-bottom: 25px;
@@ -143,11 +137,7 @@
       color: #9c2a4d;
     }
 
-    .btn {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
+    .btn, #go-back {
       padding: 12px 40px;
       background: #c41e3a;
       color: white;
@@ -158,6 +148,14 @@
       cursor: pointer;
     }
 
+    #go-back {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 300;
+      display: none;
+    }
+
     #bg-music {
       position: fixed;
       bottom: 15px;
@@ -166,13 +164,6 @@
       background: rgba(255,255,255,0.9);
       padding: 5px;
       border-radius: 8px;
-    }
-
-    @media (max-width: 480px) {
-      .envelope { height: 185px; }
-      .seal { width: 60px; height: 60px; font-size: 34px; top: 50px; }
-      .letter { margin: 20px auto; padding: 35px 25px 110px; }
-      .letter h1 { font-size: 2.5em; }
     }
   </style>
 </head>
@@ -196,9 +187,11 @@
     <button class="btn" onclick="restart()">Ma Chérie</button>
   </div>
 
+  <button id="go-back" onclick="goBack()">← Go Back</button>
+
   <!-- Musique -->
-  <audio id="bg-music" controls loop preload="metadata">
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  <audio id="bg-music" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -207,20 +200,17 @@
     const seal = document.getElementById('seal');
     const initial = document.getElementById('initial');
     const letter = document.getElementById('letter');
+    const goBackBtn = document.getElementById('go-back');
     const music = document.getElementById('bg-music');
 
-    // Musique (meilleure compatibilité mobile)
-    function playMusic() {
-      music.volume = 0.4;
+    function startMusic() {
+      music.volume = 0.45;
       music.play().catch(() => {});
     }
 
-    window.addEventListener('load', () => {
-      // Essayer de jouer après un petit délai
-      setTimeout(playMusic, 800);
-    });
+    window.addEventListener('load', startMusic);
+    document.body.addEventListener('click', startMusic, { once: true });
 
-    // Clic / Touch sur l'enveloppe (renforcé)
     function openEnvelope() {
       flap.style.transform = 'rotateX(180deg)';
       seal.style.transform = 'translateX(-50%) scale(0.15)';
@@ -229,35 +219,36 @@
       setTimeout(() => {
         initial.style.display = 'none';
         letter.classList.add('show');
+        goBackBtn.style.display = 'block';
       }, 800);
     }
 
     envelope.addEventListener('click', openEnvelope);
-    envelope.addEventListener('touchstart', (e) => {
-      e.preventDefault(); // évite les conflits
-      openEnvelope();
-    }, { passive: false });
+    envelope.addEventListener('touchstart', (e) => { e.preventDefault(); openEnvelope(); });
 
-    // Cœurs sur tout l'écran
+    function goBack() {
+      flap.style.transform = '';
+      seal.style.transform = '';
+      seal.style.opacity = '1';
+      letter.classList.remove('show');
+      goBackBtn.style.display = 'none';
+      setTimeout(() => { initial.style.display = 'flex'; }, 600);
+    }
+
     function createHeart() {
       const heart = document.createElement('div');
       heart.classList.add('heart');
-      heart.textContent = ['♥','💕','💖'][Math.floor(Math.random()*3)];
+      heart.textContent = '♥';
       heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.top = Math.random() * 60 + 'vh';
       heart.style.animationDuration = (Math.random() * 12 + 10) + 's';
-      heart.style.fontSize = (Math.random() * 20 + 18) + 'px';
       document.body.appendChild(heart);
-
-      setTimeout(() => heart.remove(), 22000);
+      setTimeout(() => heart.remove(), 23000);
     }
 
     setInterval(createHeart, 250);
     for (let i = 0; i < 25; i++) createHeart();
 
-    function restart() {
-      location.reload();
-    }
+    function restart() { location.reload(); }
   </script>
 </body>
 </html>

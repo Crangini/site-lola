@@ -63,7 +63,7 @@
       height: 52%;
       background: linear-gradient(#f0e0d0, #e8d5c0);
       clip-path: polygon(0 0, 50% 62%, 100% 0);
-      transition: all 1.5s cubic-bezier(0.6, 0, 0.3, 1);
+      transition: all 1.8s cubic-bezier(0.6, 0, 0.3, 1);
     }
 
     .seal {
@@ -81,7 +81,7 @@
       font-size: 38px;
       color: white;
       box-shadow: 0 6px 15px rgba(196, 30, 58, 0.6);
-      transition: all 1.3s ease;
+      transition: all 1.4s ease;
     }
 
     .click-text {
@@ -144,13 +144,6 @@
       z-index: 300;
       display: none;
     }
-
-    #bg-music {
-      position: fixed;
-      bottom: 15px;
-      left: 15px;
-      z-index: 200;
-    }
   </style>
 </head>
 <body>
@@ -180,14 +173,12 @@
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Bruitage Ouverture d'enveloppe -->
+  <!-- Bruitages -->
   <audio id="open-sound" preload="auto">
-    <source src="https://assets.mixkit.co/sfx/preview/296/296.wav" type="audio/wav">
+    <source src="https://assets.mixkit.co/sfx/preview/2967/2967.wav" type="audio/wav">
   </audio>
-
-  <!-- Bruitage Fermeture -->
   <audio id="close-sound" preload="auto">
-    <source src="https://assets.mixkit.co/sfx/preview/257/257.wav" type="audio/wav">
+    <source src="https://assets.mixkit.co/sfx/preview/2957/2957.wav" type="audio/wav">
   </audio>
 
   <script>
@@ -229,6 +220,7 @@
       closeSound.currentTime = 0;
       closeSound.play().catch(() => {});
 
+      // Animation de fermeture améliorée
       flap.style.transform = 'rotateX(0deg)';
       seal.style.transform = 'translateX(-50%) scale(1)';
       seal.style.opacity = '1';
@@ -238,7 +230,7 @@
 
       setTimeout(() => {
         initial.style.display = 'flex';
-      }, 900);
+      }, 1000);
     }
 
     envelope.addEventListener('click', openEnvelope);

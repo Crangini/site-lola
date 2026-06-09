@@ -126,7 +126,7 @@
       border-radius: 30px;
       font-family: 'Dancing Script', cursive;
       font-size: 1.5em;
-      cursor: default; /* Plus cliquable */
+      cursor: default;
       opacity: 0.9;
     }
 
@@ -166,7 +166,7 @@
   <div class="letter" id="letter">
     <h1>For my love</h1>
     <p><strong>Mon Amour,</strong></p>
-    <p>Since I met you, I can’t stop thinking about you. I never thought I would find someone like you, a real sunshine, always smiling, laughing, and making jokes. I never thought I could become so close to someone like you.</p>
+    <p>Since I met you, I can’t stop thinking about you. I never thought I would find someone like you—a real sunshine, always smiling, laughing, and making jokes. I never thought I could become so close to someone like you.</p>
     <p>We’ve been together for 4 months, but it feels like 4 years. I’ve never loved someone the way I love you, and I never want it to end.</p>
     <p>I don’t know if I’m the best, but I will always do my best to make you feel better and make you happy. Lola, I really love you, and I would never treat you badly. You deserve the very best in life, and I will always try to give you what you deserve.</p>
     <p class="signature">I love you, Lola. ❤️</p>
@@ -180,10 +180,12 @@
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Effets sonores -->
+  <!-- Bruitage ouverture -->
   <audio id="open-sound" preload="auto">
     <source src="https://freesound.org/data/previews/66/66930_634166-lq.mp3" type="audio/mpeg">
   </audio>
+
+  <!-- Bruitage fermeture -->
   <audio id="close-sound" preload="auto">
     <source src="https://freesound.org/data/previews/342/342749_5123853-lq.mp3" type="audio/mpeg">
   </audio>
@@ -227,6 +229,7 @@
       closeSound.currentTime = 0;
       closeSound.play().catch(() => {});
 
+      // Animation de fermeture
       flap.style.transform = 'rotateX(0deg)';
       seal.style.transform = 'translateX(-50%) scale(1)';
       seal.style.opacity = '1';
@@ -236,24 +239,28 @@
 
       setTimeout(() => {
         initial.style.display = 'flex';
-      }, 800);
+      }, 900);
     }
 
     envelope.addEventListener('click', openEnvelope);
     envelope.addEventListener('touchstart', (e) => { e.preventDefault(); openEnvelope(); });
 
+    // Cœurs partout en continu
     function createHeart() {
       const heart = document.createElement('div');
       heart.classList.add('heart');
-      heart.textContent = '♥';
+      heart.textContent = ['♥','💕','💖'][Math.floor(Math.random()*3)];
       heart.style.left = Math.random() * 100 + 'vw';
       heart.style.animationDuration = (Math.random() * 12 + 10) + 's';
+      heart.style.fontSize = (Math.random() * 22 + 18) + 'px';
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 23000);
     }
 
-    setInterval(createHeart, 250);
-    for (let i = 0; i < 25; i++) createHeart();
+    setInterval(createHeart, 220);
+    for (let i = 0; i < 30; i++) createHeart();
+
+    function restart() { location.reload(); }
   </script>
 </body>
 </html>

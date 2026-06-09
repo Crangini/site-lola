@@ -54,10 +54,8 @@
       position: relative;
       cursor: pointer;
       box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-      transition: transform 0.3s;
+      transition: transform 0.4s;
     }
-
-    .envelope:active { transform: scale(0.95); }
 
     .flap {
       position: absolute;
@@ -98,7 +96,7 @@
       max-width: 380px;
       margin: 30px auto;
       background: #fffdf0;
-      padding: 40px 30px 120px;
+      padding: 40px 30px 110px;
       border: 2px solid #d4b89e;
       border-radius: 12px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.3);
@@ -116,28 +114,11 @@
       transform: translateY(0) scale(1);
     }
 
-    .letter h1 {
-      font-family: 'Dancing Script', cursive;
-      font-size: 2.6em;
-      color: #9c2a4d;
-      text-align: center;
-      margin-bottom: 25px;
-    }
+    .letter h1 { font-family: 'Dancing Script', cursive; font-size: 2.6em; color: #9c2a4d; text-align: center; margin-bottom: 25px; }
+    .letter p { line-height: 1.75; color: #3f2a1f; margin-bottom: 16px; }
+    .signature { text-align: right; margin-top: 35px; font-size: 1.45em; color: #9c2a4d; }
 
-    .letter p {
-      line-height: 1.75;
-      color: #3f2a1f;
-      margin-bottom: 16px;
-    }
-
-    .signature {
-      text-align: right;
-      margin-top: 35px;
-      font-size: 1.45em;
-      color: #9c2a4d;
-    }
-
-    .btn, #go-back {
+    .btn {
       padding: 12px 40px;
       background: #c41e3a;
       color: white;
@@ -145,17 +126,23 @@
       border-radius: 30px;
       font-family: 'Dancing Script', cursive;
       font-size: 1.5em;
-      cursor: pointer;
+      cursor: default; /* Plus cliquable */
+      opacity: 0.9;
     }
 
     #go-back {
       position: fixed;
       bottom: 20px;
       right: 20px;
+      padding: 8px 20px;
+      background: #c41e3a;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.1em;
+      cursor: pointer;
       z-index: 300;
       display: none;
-      font-size: 1.1em;
-      padding: 8px 20px;
     }
 
     #bg-music {
@@ -163,9 +150,6 @@
       bottom: 15px;
       left: 15px;
       z-index: 200;
-      background: rgba(255,255,255,0.9);
-      padding: 5px;
-      border-radius: 8px;
     }
   </style>
 </head>
@@ -182,18 +166,26 @@
   <div class="letter" id="letter">
     <h1>For my love</h1>
     <p><strong>Mon Amour,</strong></p>
-    <p>Since I met you, I can’t stop thinking about you. I never thought I would find someone like you—a real sunshine, always smiling, laughing, and making jokes. I never thought I could become so close to someone like you.</p>
+    <p>Since I met you, I can’t stop thinking about you. I never thought I would find someone like you, a real sunshine, always smiling, laughing, and making jokes. I never thought I could become so close to someone like you.</p>
     <p>We’ve been together for 4 months, but it feels like 4 years. I’ve never loved someone the way I love you, and I never want it to end.</p>
     <p>I don’t know if I’m the best, but I will always do my best to make you feel better and make you happy. Lola, I really love you, and I would never treat you badly. You deserve the very best in life, and I will always try to give you what you deserve.</p>
     <p class="signature">I love you, Lola. ❤️</p>
-    <button class="btn" onclick="restart()">Pour ma chérie</button>
+    <button class="btn">Pour ma chérie</button>
   </div>
 
   <button id="go-back" onclick="goBack()">← Go Back</button>
 
-  <!-- Musique -->
+  <!-- Musique fond -->
   <audio id="bg-music" loop preload="auto">
     <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Effets sonores -->
+  <audio id="open-sound" preload="auto">
+    <source src="https://freesound.org/data/previews/66/66930_634166-lq.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="close-sound" preload="auto">
+    <source src="https://freesound.org/data/previews/342/342749_5123853-lq.mp3" type="audio/mpeg">
   </audio>
 
   <script>
@@ -203,19 +195,23 @@
     const initial = document.getElementById('initial');
     const letter = document.getElementById('letter');
     const goBackBtn = document.getElementById('go-back');
-    const music = document.getElementById('bg-music');
+    const bgMusic = document.getElementById('bg-music');
+    const openSound = document.getElementById('open-sound');
+    const closeSound = document.getElementById('close-sound');
 
-    // Musique automatique dès l'arrivée sur le site
-    function startMusic() {
-      music.volume = 0.45;
-      music.play().catch(() => {});
+    function startBgMusic() {
+      bgMusic.volume = 0.4;
+      bgMusic.play().catch(() => {});
     }
 
-    window.addEventListener('load', startMusic);
-    // Backup si autoplay bloqué
-    document.body.addEventListener('click', startMusic, { once: true });
+    window.addEventListener('load', startBgMusic);
+    document.body.addEventListener('click', startBgMusic, { once: true });
+    document.body.addEventListener('touchstart', startBgMusic, { once: true });
 
     function openEnvelope() {
+      openSound.currentTime = 0;
+      openSound.play().catch(() => {});
+
       flap.style.transform = 'rotateX(180deg)';
       seal.style.transform = 'translateX(-50%) scale(0.15)';
       seal.style.opacity = '0';
@@ -227,17 +223,24 @@
       }, 800);
     }
 
-    envelope.addEventListener('click', openEnvelope);
-    envelope.addEventListener('touchstart', (e) => { e.preventDefault(); openEnvelope(); });
-
     function goBack() {
-      flap.style.transform = '';
-      seal.style.transform = '';
+      closeSound.currentTime = 0;
+      closeSound.play().catch(() => {});
+
+      flap.style.transform = 'rotateX(0deg)';
+      seal.style.transform = 'translateX(-50%) scale(1)';
       seal.style.opacity = '1';
+
       letter.classList.remove('show');
       goBackBtn.style.display = 'none';
-      setTimeout(() => { initial.style.display = 'flex'; }, 600);
+
+      setTimeout(() => {
+        initial.style.display = 'flex';
+      }, 800);
     }
+
+    envelope.addEventListener('click', openEnvelope);
+    envelope.addEventListener('touchstart', (e) => { e.preventDefault(); openEnvelope(); });
 
     function createHeart() {
       const heart = document.createElement('div');
@@ -251,8 +254,6 @@
 
     setInterval(createHeart, 250);
     for (let i = 0; i < 25; i++) createHeart();
-
-    function restart() { location.reload(); }
   </script>
 </body>
 </html>
